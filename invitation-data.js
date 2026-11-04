@@ -1,5 +1,5 @@
 ﻿const invitationData = {
-  siteUrl: 'https://adityadubey1313-oss.github.io/adisiddhi_3h/',
+  siteUrl: 'https://adityadubey1313-oss.github.io/adisiddhi_6/',
   eventDate: '2026-12-06',
   primaryHero: 'preview.jpg',
   musicAsset: 'wedding-song.mp3',
@@ -134,7 +134,7 @@
       countDownHours: 'घंटे',
       countDownMinutes: 'मिनट',
       countDownSeconds: 'सेकंड',
-      whatsappShare: 'परम स्नेही स्वजन, https://adityadubey1313-oss.github.io/adisiddhi_3h/'
+      whatsappShare: 'परम स्नेही स्वजन, https://adityadubey1313-oss.github.io/adisiddhi_6/'
     }
   },
   venues: {

@@ -1,6 +1,6 @@
 # Bride-side Hindi Invitation 3H
 
-- Published URL: https://adityadubey1313-oss.github.io/adisiddhi_3h/
+- Published URL: https://adityadubey1313-oss.github.io/adisiddhi_6/
 - Authoritative source: `निमन्त्रण पत्र  तृतीय.docx`, supplied from Downloads. Wording is copied as Unicode text without translation, spelling normalization or digit substitution.
 - Source scope: 2 events.
 - Architecture reference: published 3H uses the original portrait/gradient cover, Hindi Noto fonts, invitation story, schedule-day timeline, venue cards, native contact dialog and WhatsApp sharing. Natural scrolling and reduced-motion behavior are retained. The corrected 3H story markup closes before the schedule; other versions keep their package architecture and applicable family sections.
@@ -11,6 +11,6 @@
 - Contacts: only the two source phone numbers, 9425025656 and 8989958989, are shown in the existing dialog. Unsupported hotel phone numbers and groom-side rosters are not imported.
 - Music: reuses the existing package-local `wedding-song.mp3` (the same soundtrack as completed 2E), without copying or replacing assets. One persistent looping audio element attempts audible playback on load; blocked autoplay retries on pointer, click or suitable keyboard interaction. The Hindi mute/unmute control preserves playback position and user intent across scrolling; back/forward-cache restoration resumes only when unmuted. Load/playback errors are logged and announced. Audible autoplay is browser-dependent, not guaranteed.
 - Calendar removal: download buttons, captions, translation keys, handlers, export generator and the standalone `invitation.ics` are removed. Event schedules, countdown, contacts, directions and WhatsApp sharing remain.
-- Assets and isolation: original background image, soundtrack, logos and all workflows are unchanged. Only this Hindi package is published to `adityadubey1313-oss/adisiddhi_3h` main using its existing `.github/workflows/deploy-pages.yml`. Do not push the parent source repository or run bulk publishing scripts.
+- Assets and isolation: original background image, soundtrack, logos and all workflows are unchanged. Only this Hindi package is published to `adityadubey1313-oss/adisiddhi_6` main using its existing `.github/workflows/deploy-pages.yml`. Do not push the parent source repository or run bulk publishing scripts.
 
 - Visual refinement: original artwork and Devanagari fonts are retained. The cover starts at the top without header spacing and uses a viewport-height artwork treatment inspired by 2E. Restrained gold dividers, closer invitation paragraph spacing, subtle card depth and a safe-area-aware 44px music control refine the existing sections. Reduced-motion preferences disable smooth scrolling and retain the original animation opt-out.
