@@ -29,7 +29,7 @@ jobs:
           node --check invitation-data.js
           node --test tests/music.test.cjs
           mkdir _site
-          for file in index.html styles.css app.js invitation-data.js preview.jpg wedding-song1.mp3 whatsapp-logo.png; do
+          for file in index.html styles.css app.js invitation-data.js preview.jpg wedding-song2.mp3 whatsapp-logo.png; do
             test -s "$file"
             cp "$file" _site/
           done

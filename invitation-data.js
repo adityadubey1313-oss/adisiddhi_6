@@ -2,7 +2,7 @@
   siteUrl: 'https://adityadubey1313-oss.github.io/adisiddhi_6/',
   eventDate: '2026-12-06',
   primaryHero: 'preview.jpg',
-  musicAsset: 'wedding-song1.mp3',
+  musicAsset: 'wedding-song2.mp3',
   couple: {
   "hi": "सिद्धिबाला संग आदित्य"
 },

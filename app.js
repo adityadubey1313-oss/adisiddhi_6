@@ -322,78 +322,86 @@ function initMusic() {
   const status = document.getElementById('musicStatus');
   if (audio.dataset.musicInitialized) return;
   audio.dataset.musicInitialized = 'true';
-  const playbackLimit = 30000;
   let playbackPending = false;
-  let audibleMilliseconds = 0;
-  let audibleSince = null;
-  let playing = false;
-  let stopTimer = null;
-  let limitReached = false;
+  let completedPlays = 0;
+  let sequenceFinished = false;
+  let manuallyStopped = false;
+  let resumeAfterPageShow = false;
+  let suspended = false;
   let disposed = false;
 
-  function stopAtLimit() {
-    limitReached = true;
-    clearTimeout(stopTimer);
-    stopTimer = null;
-    audibleSince = null;
+  function stopMusic() {
     removeInteractionListeners();
     if (!audio.muted) audio.muted = true;
     if (!audio.paused) audio.pause();
-    status.textContent = 'संगीत की ३० सेकंड की अवधि पूरी हो गई है।';
     updateMusicControl();
   }
 
-  function synchronizePlayback() {
-    const now = performance.now();
-    if (audibleSince !== null) {
-      audibleMilliseconds = Math.min(playbackLimit, audibleMilliseconds + Math.max(0, now - audibleSince));
-      audibleSince = null;
-    }
-    clearTimeout(stopTimer);
-    stopTimer = null;
-    if (limitReached || audibleMilliseconds >= playbackLimit) {
-      stopAtLimit();
-      return true;
-    }
-    // Media position can advance while muted or jump during seeks; count audible intervals instead.
-    if (playing && !audio.paused && !audio.ended && !audio.seeking && !audio.muted && audio.volume > 0) {
-      audibleSince = now;
-      stopTimer = setTimeout(synchronizePlayback, playbackLimit - audibleMilliseconds);
-    }
-    updateMusicControl();
-    return false;
+  function onManualStop() {
+    manuallyStopped = true;
+    resumeAfterPageShow = false;
+    stopMusic();
   }
 
   function onPlaying() {
-    playing = true;
-    if (synchronizePlayback()) return;
+    if (suspended) {
+      audio.pause();
+      updateMusicControl();
+      return;
+    }
+    if (disposed || sequenceFinished || manuallyStopped) {
+      stopMusic();
+      return;
+    }
     removeInteractionListeners();
+    updateMusicControl();
   }
 
-  function onInactive() {
-    playing = false;
-    synchronizePlayback();
+  function onEnded() {
+    if (!audio.ended || disposed || sequenceFinished || manuallyStopped) return;
+    completedPlays += 1;
+    if (completedPlays === 2) {
+      sequenceFinished = true;
+      stopMusic();
+      status.textContent = 'संगीत के दोनों आवर्तन पूरे हो गए हैं।';
+    } else {
+      audio.currentTime = 0;
+      startMusic();
+    }
+  }
+
+  function onVolumeChange() {
+    if (sequenceFinished || disposed) {
+      stopMusic();
+    } else if (audio.muted || audio.volume === 0) {
+      onManualStop();
+    } else {
+      updateMusicControl();
+    }
   }
 
   function updateMusicControl() {
-    const enabled = !audio.muted && !audio.paused && audio.volume > 0 && !limitReached;
+    const enabled = !audio.muted && (!audio.paused || playbackPending) && audio.volume > 0 && !sequenceFinished;
     toggle.setAttribute('aria-label', enabled ? 'संगीत बंद करें' : 'संगीत चालू करें');
     toggle.setAttribute('aria-pressed', String(enabled));
     toggle.title = enabled ? 'संगीत बंद करें' : 'संगीत चालू करें';
   }
 
   async function startMusic() {
-    if (disposed || synchronizePlayback() || audio.muted || playbackPending || !audio.paused) return;
+    if (disposed || suspended || sequenceFinished || manuallyStopped || audio.muted || playbackPending || !audio.paused) return;
     playbackPending = true;
+    updateMusicControl();
     try {
       await audio.play();
-      if (disposed) {
+      if (disposed || sequenceFinished || manuallyStopped) {
+        stopMusic();
+      } else if (suspended) {
         audio.pause();
-      } else if (!synchronizePlayback()) {
+      } else {
         status.textContent = '';
       }
     } catch (error) {
-      if (disposed) return;
+      if (disposed || sequenceFinished || manuallyStopped) return;
       if (error.name === 'NotAllowedError') {
         status.textContent = 'संगीत शुरू करने के लिए स्क्रीन पर टैप करें या कीबोर्ड का उपयोग करें।';
         addInteractionListeners();
@@ -410,29 +418,31 @@ function initMusic() {
   audio.loop = false;
   toggle.hidden = false;
   function onError() {
-    onInactive();
+    removeInteractionListeners();
+    audio.pause();
     console.warn('निमंत्रण का संगीत लोड नहीं हो सका।', audio.error);
     status.textContent = 'संगीत उपलब्ध नहीं है।';
+    updateMusicControl();
   }
   function onToggle() {
-    if (synchronizePlayback()) return;
-    audio.muted = !audio.muted && !audio.paused && audio.volume > 0;
-    if (!audio.muted) {
+    if (sequenceFinished || disposed) return;
+    if ((!audio.paused || playbackPending) && !audio.muted && !manuallyStopped) {
+      onManualStop();
+    } else {
+      manuallyStopped = false;
+      audio.muted = false;
       if (audio.volume === 0) audio.volume = 1;
       if (audio.error) audio.load();
       startMusic();
     }
-    synchronizePlayback();
+    updateMusicControl();
   }
   const audioListeners = {
     playing: onPlaying,
-    play: synchronizePlayback,
-    timeupdate: synchronizePlayback,
-    seeking: onInactive,
-    waiting: onInactive,
-    pause: onInactive,
-    ended: onInactive,
-    volumechange: synchronizePlayback,
+    play: onPlaying,
+    pause: updateMusicControl,
+    ended: onEnded,
+    volumechange: onVolumeChange,
     error: onError
   };
   Object.entries(audioListeners).forEach(([name, listener]) => audio.addEventListener(name, listener));
@@ -455,7 +465,8 @@ function initMusic() {
   }
   addInteractionListeners();
   function onPageHide(event) {
-    onInactive();
+    resumeAfterPageShow = !audio.paused && !audio.muted && !manuallyStopped && !sequenceFinished;
+    suspended = true;
     removeInteractionListeners();
     audio.pause();
     if (!event.persisted) {
@@ -464,18 +475,18 @@ function initMusic() {
       toggle.removeEventListener('click', onToggle);
       window.removeEventListener('pagehide', onPageHide);
       window.removeEventListener('pageshow', onPageShow);
-      document.removeEventListener('visibilitychange', synchronizePlayback);
     }
   }
   function onPageShow(event) {
-    if (event.persisted && !synchronizePlayback()) {
+    suspended = false;
+    if (event.persisted && resumeAfterPageShow && !manuallyStopped && !sequenceFinished) {
+      resumeAfterPageShow = false;
       addInteractionListeners();
       startMusic();
     }
   }
   window.addEventListener('pagehide', onPageHide);
   window.addEventListener('pageshow', onPageShow);
-  document.addEventListener('visibilitychange', synchronizePlayback);
 
   updateMusicControl();
   startMusic();
