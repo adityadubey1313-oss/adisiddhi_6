@@ -1,4 +1,15 @@
-# Bride-side Hindi Invitation 3H
+# adisiddhi_6
+
+## Project identity
+
+- Local folder and repository name: `adisiddhi_6`.
+- Origin (fetch and push): `https://github.com/adityadubey1313-oss/adisiddhi_6.git`.
+- Working branch: `main`, tracking `origin/main`.
+- Workspace integration: registered Git submodule at `adisiddhi_6`; Git metadata is managed by the parent, not a copied nested `.git` directory.
+- This is a static HTML/CSS/JavaScript project, with no package manifest, framework homepage setting or Vite base configuration. Its Pages base URL is `siteUrl` in [invitation-data.js](invitation-data.js); HTML metadata uses the same URL and assets remain project-relative.
+- Deploy from this repository's [Pages workflow](.github/workflows/deploy-pages.yml), not the parent workspace's legacy bulk-publishing scripts. Pushing this repository's `main` runs its independent validated `_site` build and Pages deployment.
+
+## Invitation version: 3H
 
 - Published URL: https://adityadubey1313-oss.github.io/adisiddhi_6/
 - Typography refinement: [index.html](index.html) and [app.js](app.js) keep the bride/groom names at their existing heading size and bold weight while rendering their introductory titles at 70% size. [styles.css](styles.css) adds salutation spacing and increases schedule dates from 21.2px to 23.2px and timings from 14.2px to 16.2px at the default 16px root size; both use weight 700. [invitation-data.js](invitation-data.js) removes only the stray venue-heading quotation marks. Existing fonts, colors, artwork, animations, event wording and this version's family layout remain unchanged.
