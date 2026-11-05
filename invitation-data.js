@@ -4,7 +4,7 @@
   primaryHero: 'preview.jpg',
   musicAsset: 'wedding-song.mp3',
   couple: {
-  "hi": "सिद्धिबाला एवं आदित्य"
+  "hi": "सिद्धिबाला संग आदित्य"
 },
   familyLine: { hi: "" },
   venueLabels: {
@@ -32,16 +32,20 @@
     "परम स्नेही स्वजन,",
     "\tईश्वर की असीम अनुकम्पा एवं पूर्वजों के शुभाशीर्वाद से हमारी सुपौत्री... ",
     "सौभाग्य-कांक्षिणी सिद्धिबाला",
-    "सुपौत्री : स्व. नन्दिनी  एवम् ",
+    "सुपौत्री : स्व. नन्दिनी दुबे",
+    "एवम्",
     "श्री डॉ. कृष्ण कुमार दुबे (एडवोकेट)",
-    "सुपुत्री: श्रीमती निहारिका एवम्",
+    "सुपुत्री: श्रीमती निहारिका दुबे",
+    "एवम्",
     "श्री सुशांत कुमार दुबे (एडवोकेट)",
     "जबलपुर (म.प्र.)",
     "संग",
     "चिरंजीव आदित्य",
-    "सुपौत्र : स्व. सूरजबाई एवम्",
+    "सुपौत्र : स्व. सूरजबाई दुबे",
+    "एवम्",
     "स्व. सुदामा प्रसाद जी दुबे",
-    "सुपुत्र: श्रीमती सरोज एवम्",
+    "सुपुत्र: श्रीमती सरोज दुबे",
+    "एवम्",
     "श्री पुरुषोत्तम दुबे",
     "जबलपुर (म. प्र.)",
     "\t....के मंगल परिणय की मधुर बेला में सपरिवार पधार कर वर-वधू को अपना स्नेह एवं शुभाशीर्वाद प्रदान कर हमें अनुग्रहित करें।"
@@ -51,6 +55,7 @@
       "स्वागताकांक्षी:- ",
       "श्रीमती निहारिका दुबे",
       "श्री सुशांत कुमार दुबे",
+      { "prefix": "(", "italicText": "बवाल हिन्दवी", "suffix": ")" },
       "सारंग कुमार दुबे (अनुज)"
     ],
     [
@@ -99,26 +104,26 @@
       countDownHours: 'Hours',
       countDownMinutes: 'Minutes',
       countDownSeconds: 'Seconds',
-      whatsappShare: 'Hello, the Dubey Family invites you to celebrate the wedding of Aditya and Siddhibala on 6 December 2026 in Jabalpur. Please join us: https://adityadubey1313-oss.github.io/adisiddhi_3/'
+      whatsappShare: 'विवाह निमंत्रण* सिद्धिबाला संग आदित्य_6\nhttps://adityadubey1313-oss.github.io/adisiddhi_6/'
     },
     hi: {
       langLabel: 'हि',
       langLabelLong: 'हिन्दी',
-      introTag: 'ॐ',
-      invitationLine: 'परम स्नेही स्वजन,',
-      weddingMeta: 'जबलपुर, मध्य प्रदेश',
-      mainNames: 'सिद्धिबाला एवं आदित्य',
+      introTag: '',
+      invitationLine: '',
+      weddingMeta: '६ दिसंबर २०२६ • जबलपुर, मध्य प्रदेश',
+      mainNames: 'सिद्धिबाला संग आदित्य',
       mainSubheading: '',
       countdownAria: 'विवाह तक की उलटी गिनती',
       eventDateLabel: 'विवाह का दिन',
       ritualsLabel: 'विवाह संस्कार',
       receptionLabel: 'आशीर्वाद समारोह एवं प्रीतिभोज',
       venueLabel: 'स्थान',
-      scheduleHeading: 'विवाह उत्सव',
+      scheduleHeading: '',
       venueHeading: 'स्थान और दिशा',
-      familyHeading: 'परिवार',
-      shareHeading: 'निमंत्रण साझा करें',
-      footerText: 'सिद्धिबाला एवं आदित्य',
+      familyHeading: '',
+      shareHeading: '',
+      footerText: 'सिद्धिबाला संग आदित्य',
       viewDirections: 'दिशा देखें',
       directionsTo: 'यहाँ जाने का मार्ग देखें:',
       callNow: 'कॉल करें',
@@ -128,13 +133,13 @@
       contactSheetAria: 'स्थानों के अनुसार संपर्क संख्याएँ',
       venueContactHeading: 'स्थानों के संपर्क',
       shareWhatsApp: 'व्हाट्सऐप पर साझा करें',
-      pageTitle: 'सिद्धिबाला एवं आदित्य | विवाह निमंत्रण _3h',
-      description: '६ दिसंबर २०२६ को जबलपुर में सिद्धिबाला एवं आदित्य के विवाह का पारंपरिक निमंत्रण।',
+      pageTitle: 'सिद्धिबाला संग आदित्य | विवाह निमंत्रण _3h',
+      description: '६ दिसंबर २०२६ को जबलपुर में सिद्धिबाला संग आदित्य के विवाह का पारंपरिक निमंत्रण।',
       countDownDays: 'दिन',
       countDownHours: 'घंटे',
       countDownMinutes: 'मिनट',
       countDownSeconds: 'सेकंड',
-      whatsappShare: 'परम स्नेही स्वजन, https://adityadubey1313-oss.github.io/adisiddhi_6/'
+      whatsappShare: 'विवाह निमंत्रण* सिद्धिबाला संग आदित्य_6\nhttps://adityadubey1313-oss.github.io/adisiddhi_6/'
     }
   },
   venues: {
@@ -170,7 +175,7 @@
     "end": "15:00",
     "venueId": "hotelGulzar",
     "timeText": "प्रात:काल ९ बजे से दोपहर ३ बजे तक ",
-    "programTitle": "|| कार्यक्रम ||"
+    "programTitle": "||वैवाहिक कार्यक्रम ||"
   },
   {
     "id": "reception-dinner",
@@ -185,7 +190,7 @@
     "end": null,
     "venueId": "hotelGulzar",
     "timeText": "रात्रि ८ बजे से",
-    "programTitle": "|| कार्यक्रम ||"
+    "programTitle": "||वैवाहिक कार्यक्रम ||"
   }
 ]
 };

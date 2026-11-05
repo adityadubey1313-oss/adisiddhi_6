@@ -36,7 +36,10 @@ function localizeDigits(text, lang = appState.lang) {
 
 function setText(id, value) {
   const element = document.getElementById(id);
-  if (element) element.textContent = value;
+  if (element) {
+    element.textContent = value;
+    element.hidden = !value;
+  }
 }
 
 function formatEventTime(time) {
@@ -55,10 +58,6 @@ function formatEventRange(event) {
   const start = formatEventTime(event.start);
   if (event.end) return `${start}–${formatEventTime(event.end)}`;
   return appState.lang === 'hi' ? `${start} से आगे` : `${start} onwards`;
-}
-
-function safePhoneLink(number) {
-  return 'tel:' + number.replace(/[^\d+]/g, '');
 }
 
 function directionsIcon() {
@@ -95,15 +94,12 @@ function setLanguage(lang) {
     familyTitle: t.familyHeading,
     familyLine: getText(familyLine, lang),
     shareTitle: t.shareHeading,
-    callActionLabel: t.call,
-    contactDialogTitle: t.contactSheetTitle,
-    contactDialogDescription: t.contactSheetAria,
     footerText: t.footerText
   };
 
   Object.entries(textById).forEach(([id, value]) => setText(id, localizeDigits(value, lang)));
-  const closeContactsButton = document.getElementById('closeContacts');
-  if (closeContactsButton) closeContactsButton.setAttribute('aria-label', localizeDigits(t.contactSheetClose, lang));
+  const scheduleHeadingGroup = document.querySelector('#schedule .section-heading-group');
+  if (scheduleHeadingGroup) scheduleHeadingGroup.hidden = !t.scheduleHeading;
   document.querySelectorAll('[data-copy]').forEach((element) => {
     element.textContent = localizeDigits(t[element.dataset.copy], lang);
   });
@@ -119,16 +115,26 @@ function setLanguage(lang) {
   renderSourceInvitation();
   renderSchedule(lang);
   renderVenues(lang);
-  renderContacts(lang);
   renderWhatsAppText(lang);
   updateCountdown();
 }
 
 function appendSourceLines(container, lines) {
-  lines.forEach((text) => {
+  lines.forEach((line) => {
+    const text = typeof line === 'string'
+      ? line
+      : `${line.prefix || ''}${line.italicText || ''}${line.suffix || ''}`;
     const element = document.createElement(/^(सौभाग्य-कांक्षिणी|चिरंजीव)/.test(text) ? 'h3' : 'p');
     element.className = 'source-paragraph';
-    element.textContent = text;
+    if (text.trim() === '।। निमंत्रण ।।') element.classList.add('invitation-title');
+    if (typeof line === 'string') {
+      element.textContent = text;
+    } else {
+      element.append(document.createTextNode(line.prefix || ''));
+      const emphasis = document.createElement('em');
+      emphasis.textContent = line.italicText || '';
+      element.append(emphasis, document.createTextNode(line.suffix || ''));
+    }
     container.appendChild(element);
   });
 }
@@ -137,7 +143,10 @@ function renderSourceInvitation() {
   const source = invitationData.sourceDocument;
   const story = document.getElementById('sourceInvitation');
   story.replaceChildren();
-  appendSourceLines(story, [...source.invocation, ...source.invitation]);
+  const sourceLines = source.invocationAfterInvitation
+    ? [...source.invitation, ...source.invocation]
+    : [...source.invocation, ...source.invitation];
+  appendSourceLines(story, sourceLines);
   const greetings = document.getElementById('sourceGreetings') || document.getElementById('familyGrid');
   greetings.replaceChildren();
   source.greetings.forEach((lines) => {
@@ -261,40 +270,8 @@ function renderVenues(lang) {
   });
 }
 
-function renderContacts(lang) {
-  const contactGroups = document.getElementById('contactGroups');
-  if (!contactGroups) return;
-
-  contactGroups.innerHTML = '';
-
-  Object.values(invitationData.contacts).forEach((contact) => {
-    const venue = contact.venueId ? venues[contact.venueId] : null;
-    const group = document.createElement('section');
-    group.className = 'contact-group';
-
-    const heading = document.createElement('h3');
-    heading.textContent = contact.label ? getText(contact.label, lang) : getText(venue.name, lang);
-    group.appendChild(heading);
-
-    const numberList = document.createElement('ul');
-    const entries = contact.people || contact.numbers.map((number) => ({ number }));
-    entries.forEach(({ name, number }) => {
-      const item = document.createElement('li');
-      const link = document.createElement('a');
-      const personName = getText(name, lang);
-      link.href = safePhoneLink(number);
-      link.textContent = personName ? `${localizeDigits(personName, lang)}: ${number}` : number;
-      link.setAttribute('aria-label', `${localizeDigits(translations[lang].callNow, lang)} ${localizeDigits(personName, lang)} ${number}`.trim());
-      item.appendChild(link);
-      numberList.appendChild(item);
-    });
-    group.appendChild(numberList);
-    contactGroups.appendChild(group);
-  });
-}
-
 function renderWhatsAppText(lang) {
-  const shareText = getText(translations[lang].whatsappShare, lang);
+  const shareText = translations[lang].whatsappShare;
   const shareButton = document.getElementById('whatsappShare');
   if (shareButton) {
     shareButton.onclick = () => {
@@ -403,24 +380,6 @@ function initMusic() {
 }
 
 function init() {
-  const contactDialog = document.getElementById('contactDialog');
-  const openContactsButton = document.getElementById('openContacts');
-  const closeContactsButton = document.getElementById('closeContacts');
-
-  if (contactDialog && openContactsButton && closeContactsButton) {
-    openContactsButton.addEventListener('click', () => contactDialog.showModal());
-    closeContactsButton.addEventListener('click', () => contactDialog.close());
-    contactDialog.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        contactDialog.close();
-      }
-    });
-    contactDialog.addEventListener('click', (event) => {
-      if (event.target === contactDialog) contactDialog.close();
-    });
-  }
-
   setLanguage(appState.lang);
   initMusic();
   setInterval(updateCountdown, 1000);

@@ -26,7 +26,7 @@ html {
 
 body {
   margin: 0;
-  font-size: 17px;
+  font-size: 19px;
   font-family: 'Jost', 'Segoe UI', sans-serif;
   background:
     radial-gradient(circle at top, rgba(255,255,255,0.72), rgba(245,236,227,0.7) 32%, rgba(241,227,214,0.86) 100%),
@@ -321,7 +321,7 @@ button {
 body {
   background: var(--bg);
   color: var(--ink);
-  font-size: 17px;
+  font-size: 19px;
   font-family: 'Jost', 'Segoe UI', sans-serif;
 }
 
@@ -1228,97 +1228,97 @@ html[lang="hi"] .invitation-copy-hi {
 
 .intro-tag,
 .eyebrow {
-  font-size: calc(0.7rem + 1px);
+  font-size: calc(0.7rem + 3px);
 }
 
 .hero-subtitle {
-  font-size: clamp(calc(1rem + 1px), calc(2vw + 1px), calc(1.35rem + 1px));
+  font-size: clamp(calc(1rem + 3px), calc(2vw + 3px), calc(1.35rem + 3px));
 }
 
 .hero-date {
-  font-size: calc(0.9rem + 1px);
+  font-size: calc(0.9rem + 3px);
 }
 
 .hero-countdown .countdown-unit strong {
-  font-size: calc(1.2rem + 1px);
+  font-size: calc(1.2rem + 3px);
 }
 
 .hero-countdown .countdown-unit span {
-  font-size: calc(0.52rem + 1px);
+  font-size: calc(0.52rem + 3px);
 }
 
 .countdown-unit strong {
-  font-size: calc(1.42rem + 1px);
+  font-size: calc(1.42rem + 3px);
 }
 
 .countdown-unit span {
-  font-size: calc(0.58rem + 1px);
+  font-size: calc(0.58rem + 3px);
 }
 
 .detail-label {
-  font-size: calc(0.63rem + 1px);
+  font-size: calc(0.63rem + 3px);
 }
 
 .wedding-detail strong {
-  font-size: calc(0.87rem + 1px);
+  font-size: calc(0.87rem + 3px);
 }
 
 .timezone-note {
-  font-size: calc(0.67rem + 1px);
+  font-size: calc(0.67rem + 3px);
 }
 
 .text-link {
-  font-size: calc(0.77rem + 1px);
+  font-size: calc(0.77rem + 3px);
 }
 
 .section-intro {
-  font-size: calc(1.15rem + 1px);
+  font-size: calc(1.15rem + 3px);
 }
 
 .event-time {
-  font-size: calc(0.7rem + 1px);
+  font-size: calc(0.7rem + 3px);
 }
 
 .event-venue {
-  font-size: calc(0.75rem + 1px);
+  font-size: calc(0.75rem + 3px);
 }
 
 .event-note {
-  font-size: calc(0.72rem + 1px);
+  font-size: calc(0.72rem + 3px);
 }
 
 .venue-card p {
-  font-size: calc(0.9rem + 1px);
+  font-size: calc(0.9rem + 3px);
 }
 
 .button-link {
-  font-size: calc(0.76rem + 1px);
+  font-size: calc(0.76rem + 3px);
 }
 
 .family-invitation {
-  font-size: calc(1.35rem + 1px);
+  font-size: calc(1.35rem + 3px);
 }
 
 .family-role {
-  font-size: calc(0.69rem + 1px);
+  font-size: calc(0.69rem + 3px);
 }
 
 .family-names p {
-  font-size: calc(1.55rem + 1px);
+  font-size: calc(1.55rem + 3px);
 }
 
 .site-footer {
-  font-size: calc(1.2rem + 1px);
+  font-size: calc(1.2rem + 3px);
 }
 
 @media (max-width: 760px) {
 
   .hero-date {
-    font-size: calc(0.78rem + 1px);
+    font-size: calc(0.78rem + 3px);
   }
 
   .wedding-detail strong {
-    font-size: calc(0.78rem + 1px);
+    font-size: calc(0.78rem + 3px);
   }
 }
 
@@ -1400,10 +1400,6 @@ html[lang="hi"] .invitation-copy-hi {
 
 .event-venue {
   overflow-wrap: anywhere;
-}
-
-html[lang="hi"] .hero-title {
-  white-space: normal;
 }
 
 .hero {
@@ -1494,5 +1490,65 @@ html[lang="hi"] .intro-tag {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+}
+
+.hero-title {
+  font-size: clamp(calc(3.2rem + 2px), calc(8vw + 2px), calc(8rem + 2px));
+}
+
+.section-heading {
+  font-size: calc(2.5rem + 2px);
+}
+
+html[lang="hi"] #schedule,
+html[lang="hi"] #family,
+html[lang="hi"] #share {
+  padding-top: 1.5rem;
+}
+
+.venue-card h3 {
+  font-size: calc(1.8rem + 2px);
+}
+
+.event-item h4 {
+  font-size: calc(1.27rem + 2px);
+}
+
+.schedule-day-heading {
+  font-size: calc(1.2rem + 2px);
+}
+
+.source-invitation {
+  font-size: calc(1.08rem + 2px);
+}
+
+.source-invitation > h3 {
+  font-size: clamp(calc(1.35rem + 2px), calc(3vw + 2px), calc(1.8rem + 2px));
+}
+
+.source-invitation > .invitation-title {
+  margin: 1.2rem 0;
+  color: var(--maroon);
+  font-size: clamp(calc(1.7rem + 2px), calc(4vw + 2px), calc(2.3rem + 2px));
+  font-weight: 700;
+}
+
+.source-greetings .family-role {
+  font-size: calc(1.2rem + 2px);
+  font-weight: 700;
+}
+
+.source-greetings .family-names p {
+  font-size: calc(1.08rem + 2px);
+}
+
+@media (max-width: 760px) {
+  .hero-title {
+    font-size: clamp(calc(1.7rem + 2px), calc(8vw + 2px), calc(3.1rem + 2px));
+  }
+
+  .section-heading {
+    font-size: calc(2.1rem + 2px);
   }
 }
