@@ -124,10 +124,20 @@ function appendSourceLines(container, lines) {
     const text = typeof line === 'string'
       ? line
       : `${line.prefix || ''}${line.italicText || ''}${line.suffix || ''}`;
-    const element = document.createElement(/^(सौभाग्य-कांक्षिणी|चिरंजीव)/.test(text) ? 'h3' : 'p');
+    const personHeading = text.match(/^(सौभाग्य-कांक्षिणी|चिरंजीव)(\s+)(.+)$/);
+    const element = document.createElement(personHeading ? 'h3' : 'p');
     element.className = 'source-paragraph';
     if (text.trim() === '।। निमंत्रण ।।') element.classList.add('invitation-title');
-    if (typeof line === 'string') {
+    if (text.trim() === 'परम स्नेही स्वजन,') element.classList.add('invitation-salutation');
+    if (typeof line === 'string' && personHeading) {
+      const title = document.createElement('span');
+      title.className = 'person-title';
+      title.textContent = personHeading[1];
+      const name = document.createElement('span');
+      name.className = 'person-name';
+      name.textContent = personHeading[3];
+      element.append(title, document.createTextNode(personHeading[2]), name);
+    } else if (typeof line === 'string') {
       element.textContent = text;
     } else {
       element.append(document.createTextNode(line.prefix || ''));
@@ -143,10 +153,15 @@ function renderSourceInvitation() {
   const source = invitationData.sourceDocument;
   const story = document.getElementById('sourceInvitation');
   story.replaceChildren();
-  const sourceLines = source.invocationAfterInvitation
-    ? [...source.invitation, ...source.invocation]
-    : [...source.invocation, ...source.invitation];
-  appendSourceLines(story, sourceLines);
+  if (source.invocationAfterInvitation) {
+    appendSourceLines(story, source.invitation);
+    const prayer = document.createElement('div');
+    prayer.className = 'invitation-prayer';
+    appendSourceLines(prayer, source.invocation);
+    story.appendChild(prayer);
+  } else {
+    appendSourceLines(story, [...source.invocation, ...source.invitation]);
+  }
   const greetings = document.getElementById('sourceGreetings') || document.getElementById('familyGrid');
   greetings.replaceChildren();
   source.greetings.forEach((lines) => {

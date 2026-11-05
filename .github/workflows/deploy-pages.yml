@@ -23,6 +23,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Validate and build static site
+        run: |
+          node --check app.js
+          node --check invitation-data.js
+          mkdir _site
+          for file in index.html styles.css app.js invitation-data.js preview.jpg wedding-song.mp3 whatsapp-logo.png; do
+            test -s "$file"
+            cp "$file" _site/
+          done
+          touch _site/.nojekyll
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
         with:
@@ -30,7 +40,7 @@ jobs:
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5

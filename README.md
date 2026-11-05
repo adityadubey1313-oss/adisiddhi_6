@@ -1,6 +1,8 @@
 # Bride-side Hindi Invitation 3H
 
 - Published URL: https://adityadubey1313-oss.github.io/adisiddhi_6/
+- Typography refinement: [index.html](index.html) and [app.js](app.js) keep the bride/groom names at their existing heading size and bold weight while rendering their introductory titles at 70% size. [styles.css](styles.css) adds salutation spacing and increases schedule dates from 21.2px to 23.2px and timings from 14.2px to 16.2px at the default 16px root size; both use weight 700. [invitation-data.js](invitation-data.js) removes only the stray venue-heading quotation marks. Existing fonts, colors, artwork, animations, event wording and this version's family layout remain unchanged.
+- Build: [deploy-pages.yml](.github/workflows/deploy-pages.yml) now validates JavaScript, checks and stages the seven site files in `_site`, then deploys that artifact. No dependencies or framework build are required.
 - Authoritative source: `निमन्त्रण पत्र  तृतीय.docx`, supplied from Downloads. Wording is copied as Unicode text without translation, spelling normalization or digit substitution.
 - Source scope: 2 events.
 - Architecture reference: published 3H uses the original portrait/gradient cover, Hindi Noto fonts, invitation story, schedule-day timeline, venue cards, native contact dialog and WhatsApp sharing. Natural scrolling and reduced-motion behavior are retained. The corrected 3H story markup closes before the schedule; other versions keep their package architecture and applicable family sections.
@@ -11,7 +13,7 @@
 - Contacts: the call button and contact dialog are removed; source phone numbers remain in venue addresses.
 - Music: reuses the existing package-local `wedding-song.mp3` (the same soundtrack as completed 2E), without copying or replacing assets. One persistent looping audio element attempts audible playback on load; blocked autoplay retries on pointer, click or suitable keyboard interaction. The Hindi mute/unmute control preserves playback position and user intent across scrolling; back/forward-cache restoration resumes only when unmuted. Load/playback errors are logged and announced. Audible autoplay is browser-dependent, not guaranteed.
 - Calendar removal: download buttons, captions, translation keys, handlers, export generator and the standalone `invitation.ics` are removed. Event schedules, countdown, contacts, directions and WhatsApp sharing remain.
-- Assets and isolation: original background image, soundtrack, logos and all workflows are unchanged. Only this Hindi package is published to `adityadubey1313-oss/adisiddhi_6` main using its existing `.github/workflows/deploy-pages.yml`. Do not push the parent source repository or run bulk publishing scripts.
+- Assets and isolation: original background image, soundtrack and logos are unchanged. Only this Hindi package is published to `adityadubey1313-oss/adisiddhi_6` main using `.github/workflows/deploy-pages.yml` with the validated static build described above. Do not push the parent source repository or run bulk publishing scripts.
 
 - Visual refinement: original artwork and Devanagari fonts are retained. The cover starts at the top without header spacing and uses a viewport-height artwork treatment inspired by 2E. Restrained gold dividers, closer invitation paragraph spacing, subtle card depth and a safe-area-aware 44px music control refine the existing sections. Reduced-motion preferences disable smooth scrolling and retain the original animation opt-out.
 
