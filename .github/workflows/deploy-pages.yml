@@ -28,7 +28,7 @@ jobs:
           node --check app.js
           node --check invitation-data.js
           mkdir _site
-          for file in index.html styles.css app.js invitation-data.js preview.jpg wedding-song.mp3 whatsapp-logo.png; do
+          for file in index.html styles.css app.js invitation-data.js preview.jpg wedding-song1.mp3 whatsapp-logo.png; do
             test -s "$file"
             cp "$file" _site/
           done
