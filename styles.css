@@ -1422,7 +1422,8 @@ html[lang="hi"] .intro-tag {
   letter-spacing: 0;
 }
 
-.source-invitation > p {
+.source-invitation > p,
+.invitation-prayer > p {
   margin: 0.45rem 0;
 }
 
@@ -1437,6 +1438,31 @@ html[lang="hi"] .intro-tag {
 
 .person-title {
   font-size: 0.7em;
+}
+
+.invitation-prayer {
+  margin: 2rem 0 1.5rem;
+  padding: 1.2rem 0;
+  border-block: 1px solid var(--line);
+  break-inside: avoid;
+}
+
+.invitation-prayer > p:nth-child(-n+2) {
+  color: var(--maroon);
+  font-weight: 700;
+}
+
+.invitation-prayer > p:first-child {
+  font-size: 1.3em;
+}
+
+.invitation-prayer > p:nth-child(3) {
+  margin-top: 0.9rem;
+}
+
+.invitation-prayer > p:nth-child(n+3) {
+  font-size: 0.95em;
+  font-style: italic;
 }
 
 .source-invitation > h3 {

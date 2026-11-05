@@ -322,54 +322,78 @@ function initMusic() {
   const status = document.getElementById('musicStatus');
   if (audio.dataset.musicInitialized) return;
   audio.dataset.musicInitialized = 'true';
+  const playbackLimit = 30000;
   let playbackPending = false;
-  let deadline = null;
+  let audibleMilliseconds = 0;
+  let audibleSince = null;
+  let playing = false;
   let stopTimer = null;
   let limitReached = false;
+  let disposed = false;
 
   function stopAtLimit() {
     limitReached = true;
     clearTimeout(stopTimer);
     stopTimer = null;
+    audibleSince = null;
     removeInteractionListeners();
-    audio.muted = true;
-    audio.pause();
-    if (audio.currentTime > 60) audio.currentTime = 60;
-    status.textContent = 'संगीत की एक मिनट की अवधि पूरी हो गई है।';
+    if (!audio.muted) audio.muted = true;
+    if (!audio.paused) audio.pause();
+    status.textContent = 'संगीत की ३० सेकंड की अवधि पूरी हो गई है।';
     updateMusicControl();
   }
 
-  function checkLimit() {
-    if (limitReached || (deadline !== null && performance.now() >= deadline) || audio.currentTime >= 60) {
+  function synchronizePlayback() {
+    const now = performance.now();
+    if (audibleSince !== null) {
+      audibleMilliseconds = Math.min(playbackLimit, audibleMilliseconds + Math.max(0, now - audibleSince));
+      audibleSince = null;
+    }
+    clearTimeout(stopTimer);
+    stopTimer = null;
+    if (limitReached || audibleMilliseconds >= playbackLimit) {
       stopAtLimit();
       return true;
     }
+    // Media position can advance while muted or jump during seeks; count audible intervals instead.
+    if (playing && !audio.paused && !audio.ended && !audio.seeking && !audio.muted && audio.volume > 0) {
+      audibleSince = now;
+      stopTimer = setTimeout(synchronizePlayback, playbackLimit - audibleMilliseconds);
+    }
+    updateMusicControl();
     return false;
   }
 
   function onPlaying() {
-    if (checkLimit()) return;
-    if (deadline === null) deadline = performance.now() + 60000;
-    clearTimeout(stopTimer);
-    stopTimer = setTimeout(stopAtLimit, Math.max(0, deadline - performance.now()));
+    playing = true;
+    if (synchronizePlayback()) return;
     removeInteractionListeners();
-    updateMusicControl();
+  }
+
+  function onInactive() {
+    playing = false;
+    synchronizePlayback();
   }
 
   function updateMusicControl() {
-    const enabled = !audio.muted && !limitReached;
+    const enabled = !audio.muted && !audio.paused && audio.volume > 0 && !limitReached;
     toggle.setAttribute('aria-label', enabled ? 'संगीत बंद करें' : 'संगीत चालू करें');
     toggle.setAttribute('aria-pressed', String(enabled));
     toggle.title = enabled ? 'संगीत बंद करें' : 'संगीत चालू करें';
   }
 
   async function startMusic() {
-    if (checkLimit() || audio.muted || playbackPending || !audio.paused) return;
+    if (disposed || synchronizePlayback() || audio.muted || playbackPending || !audio.paused) return;
     playbackPending = true;
     try {
       await audio.play();
-      if (!checkLimit()) status.textContent = '';
+      if (disposed) {
+        audio.pause();
+      } else if (!synchronizePlayback()) {
+        status.textContent = '';
+      }
     } catch (error) {
+      if (disposed) return;
       if (error.name === 'NotAllowedError') {
         status.textContent = 'संगीत शुरू करने के लिए स्क्रीन पर टैप करें या कीबोर्ड का उपयोग करें।';
         addInteractionListeners();
@@ -385,28 +409,34 @@ function initMusic() {
 
   audio.loop = false;
   toggle.hidden = false;
-  audio.addEventListener('playing', onPlaying);
-  audio.addEventListener('play', () => {
-    if (!checkLimit()) updateMusicControl();
-  });
-  audio.addEventListener('timeupdate', checkLimit);
-  audio.addEventListener('seeking', checkLimit);
-  audio.addEventListener('pause', updateMusicControl);
-  audio.addEventListener('volumechange', updateMusicControl);
-  audio.addEventListener('error', () => {
+  function onError() {
+    onInactive();
     console.warn('निमंत्रण का संगीत लोड नहीं हो सका।', audio.error);
     status.textContent = 'संगीत उपलब्ध नहीं है।';
-    updateMusicControl();
-  });
-  toggle.addEventListener('click', () => {
-    if (checkLimit()) return;
-    audio.muted = !audio.muted;
+  }
+  function onToggle() {
+    if (synchronizePlayback()) return;
+    audio.muted = !audio.muted && !audio.paused && audio.volume > 0;
     if (!audio.muted) {
+      if (audio.volume === 0) audio.volume = 1;
       if (audio.error) audio.load();
       startMusic();
     }
-    updateMusicControl();
-  });
+    synchronizePlayback();
+  }
+  const audioListeners = {
+    playing: onPlaying,
+    play: synchronizePlayback,
+    timeupdate: synchronizePlayback,
+    seeking: onInactive,
+    waiting: onInactive,
+    pause: onInactive,
+    ended: onInactive,
+    volumechange: synchronizePlayback,
+    error: onError
+  };
+  Object.entries(audioListeners).forEach(([name, listener]) => audio.addEventListener(name, listener));
+  toggle.addEventListener('click', onToggle);
 
   function onInteraction(event) {
     if (toggle.contains(event.target)) return;
@@ -424,19 +454,28 @@ function initMusic() {
     document.addEventListener('keydown', onInteraction, { capture: true, passive: true });
   }
   addInteractionListeners();
-  window.addEventListener('pagehide', () => {
-    clearTimeout(stopTimer);
-    stopTimer = null;
+  function onPageHide(event) {
+    onInactive();
     removeInteractionListeners();
     audio.pause();
-  });
-  window.addEventListener('pageshow', (event) => {
-    if (event.persisted && !checkLimit()) {
+    if (!event.persisted) {
+      disposed = true;
+      Object.entries(audioListeners).forEach(([name, listener]) => audio.removeEventListener(name, listener));
+      toggle.removeEventListener('click', onToggle);
+      window.removeEventListener('pagehide', onPageHide);
+      window.removeEventListener('pageshow', onPageShow);
+      document.removeEventListener('visibilitychange', synchronizePlayback);
+    }
+  }
+  function onPageShow(event) {
+    if (event.persisted && !synchronizePlayback()) {
       addInteractionListeners();
       startMusic();
     }
-  });
-  document.addEventListener('visibilitychange', checkLimit);
+  }
+  window.addEventListener('pagehide', onPageHide);
+  window.addEventListener('pageshow', onPageShow);
+  document.addEventListener('visibilitychange', synchronizePlayback);
 
   updateMusicControl();
   startMusic();

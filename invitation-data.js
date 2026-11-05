@@ -23,7 +23,13 @@
 },
   sourceDocument: {
   "filename": "निमन्त्रण पत्र  तृतीय.docx",
-  "invocation": [],
+  "invocation": [
+    "ॐ",
+    "।। श्री गणेशाय नम: ।।",
+    "मङ्गलम् भगवान् विष्णु: मङ्गलम् गरुड़ध्वज: ।",
+    "मङ्गलम् पुण्डरीकाक्ष: मङ्गलाय तनो हरि: ।।"
+  ],
+  "invocationAfterInvitation": true,
   "invitation": [
     "ॐ",
     "।। निमंत्रण ।। ",
