@@ -128,6 +128,7 @@ function appendSourceLines(container, lines) {
     const element = document.createElement(personHeading ? 'h3' : 'p');
     element.className = 'source-paragraph';
     if (text.trim() === '।। निमंत्रण ।।') element.classList.add('invitation-title');
+    if (['विनय निमंत्रण आपको, गौरी पुत्र गणेश ।', 'मात-भवानी, भास्कर, ब्रह्मा, विष्णु, महेश ।।'].includes(text.trim())) element.classList.add('invitation-verse');
     if (text.trim() === 'परम स्नेही स्वजन,') element.classList.add('invitation-salutation');
     if (typeof line === 'string' && personHeading) {
       const title = document.createElement('span');

@@ -1450,7 +1450,8 @@ html[lang="hi"] .intro-tag {
   break-inside: avoid;
 }
 
-.invitation-prayer > p {
+.invitation-prayer > p,
+.source-invitation > .invitation-verse {
   font-size: 0.95em;
   font-style: italic;
 }
