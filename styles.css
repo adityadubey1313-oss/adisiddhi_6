@@ -1591,3 +1591,24 @@ html[lang="hi"] #share {
     font-size: calc(2.1rem + 2px);
   }
 }
+
+/* Tighten gap between the closing shlok and the programme heading */
+#sourceInvitation .invitation-prayer {
+  margin-bottom: 0;
+}
+
+#sourceInvitation .invitation-prayer::after {
+  margin-bottom: 0;
+}
+
+#heroSection {
+  padding-bottom: 0.5rem;
+}
+
+#schedule {
+  padding-top: 0.5rem;
+}
+
+#schedule .program-heading {
+  margin-top: 0.5rem;
+}
