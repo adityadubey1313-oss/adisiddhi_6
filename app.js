@@ -158,6 +158,12 @@ function renderSourceInvitation() {
     appendSourceLines(story, source.invitation);
     const prayer = document.createElement('div');
     prayer.className = 'invitation-prayer';
+    const namaste = document.createElement('p');
+    namaste.className = 'invitation-namaste';
+    namaste.textContent = '🙏🏻';
+    const divider = document.createElement('hr');
+    divider.className = 'invitation-divider';
+    prayer.append(namaste, divider);
     appendSourceLines(prayer, source.invocation);
     story.appendChild(prayer);
   } else {

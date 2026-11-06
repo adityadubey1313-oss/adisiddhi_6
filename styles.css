@@ -1456,12 +1456,23 @@ html[lang="hi"] .intro-tag {
   font-style: italic;
 }
 
-.invitation-prayer::after {
-  content: '';
-  display: block;
+.invitation-prayer {
+  padding-bottom: calc(1.8rem + 1px);
+}
+
+.invitation-prayer > .invitation-namaste {
+  margin: 0.2rem 0 0;
+  font-size: 1.7rem;
+  font-style: normal;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.invitation-prayer > .invitation-divider {
   width: 3rem;
   height: 1px;
-  margin: 1.8rem auto 0.4rem;
+  margin: 0.8rem auto 1rem;
+  border: 0;
   background: var(--gold);
 }
 
@@ -1594,10 +1605,6 @@ html[lang="hi"] #share {
 
 /* Tighten gap between the closing shlok and the programme heading */
 #sourceInvitation .invitation-prayer {
-  margin-bottom: 0;
-}
-
-#sourceInvitation .invitation-prayer::after {
   margin-bottom: 0;
 }
 
