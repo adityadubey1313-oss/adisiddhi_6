@@ -436,7 +436,6 @@ body {
   padding: 0.7rem 0;
   border: 0;
   border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
   border-radius: 0;
   background: transparent;
   box-shadow: none;
@@ -882,6 +881,11 @@ a:hover {
 
 .site-footer p {
   margin: 0;
+}
+
+.site-footer:has(#footerText[hidden]) {
+  padding: 0 0 2rem;
+  border-top: 0;
 }
 
 @keyframes arrive {
@@ -1441,28 +1445,23 @@ html[lang="hi"] .intro-tag {
 }
 
 .invitation-prayer {
-  margin: 2rem 0 1.5rem;
-  padding: 1.2rem 0;
-  border-block: 1px solid var(--line);
+  margin: 2.2rem 0 1.5rem;
+  padding: 0.4rem 0 0;
   break-inside: avoid;
 }
 
-.invitation-prayer > p:nth-child(-n+2) {
-  color: var(--maroon);
-  font-weight: 700;
-}
-
-.invitation-prayer > p:first-child {
-  font-size: 1.3em;
-}
-
-.invitation-prayer > p:nth-child(3) {
-  margin-top: 0.9rem;
-}
-
-.invitation-prayer > p:nth-child(n+3) {
+.invitation-prayer > p {
   font-size: 0.95em;
   font-style: italic;
+}
+
+.invitation-prayer::after {
+  content: '';
+  display: block;
+  width: 3rem;
+  height: 1px;
+  margin: 1.8rem auto 0.4rem;
+  background: var(--gold);
 }
 
 .source-invitation > h3 {
@@ -1470,7 +1469,7 @@ html[lang="hi"] .intro-tag {
   font-size: clamp(1.35rem, 3vw, 1.8rem);
 }
 
-.section > .section-heading::after,
+.section > .section-heading:not(#venueTitle)::after,
 .section-heading-group > .section-heading::after {
   content: '';
   display: block;
