@@ -333,6 +333,73 @@ function updateCountdown() {
   setText('secondsLabel', translations[appState.lang].countDownSeconds);
 }
 
+function initScrollNudge() {
+  const root = document.documentElement;
+  if (root.dataset.scrollNudgeInitialized) return;
+  root.dataset.scrollNudgeInitialized = 'true';
+  const scroller = document.scrollingElement;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (document.hidden || reducedMotion.matches || scroller.scrollTop !== 0) return;
+
+  let timer;
+  let frame;
+  let expectedTop = 0;
+  const interactions = ['pointerdown', 'touchstart', 'wheel', 'click', 'keydown', 'focusin'];
+  const options = { capture: true, passive: true };
+
+  function cancel() {
+    clearTimeout(timer);
+    cancelAnimationFrame(frame);
+    interactions.forEach((name) => document.removeEventListener(name, cancel, true));
+    window.removeEventListener('scroll', onScroll, true);
+    window.removeEventListener('load', startTimer);
+    window.removeEventListener('pagehide', cancel);
+    document.removeEventListener('visibilitychange', onVisibilityChange);
+    reducedMotion.removeEventListener('change', onMotionChange);
+  }
+  function onScroll() {
+    if (scroller.scrollTop !== expectedTop) cancel();
+  }
+  function onVisibilityChange() {
+    if (document.hidden) cancel();
+  }
+  function onMotionChange() {
+    if (reducedMotion.matches) cancel();
+  }
+  function startTimer() {
+    window.removeEventListener('load', startTimer);
+    timer = setTimeout(() => {
+      if (document.hidden || reducedMotion.matches || scroller.scrollTop !== 0) {
+        cancel();
+        return;
+      }
+      const distance = Math.min(50, scroller.scrollHeight - scroller.clientHeight);
+      const start = performance.now();
+      function animate(now) {
+        if (document.hidden || reducedMotion.matches || scroller.scrollTop !== expectedTop) {
+          cancel();
+          return;
+        }
+        const progress = Math.min((now - start) / 800, 1);
+        const eased = progress * progress * (3 - 2 * progress);
+        scroller.scrollTo({ top: distance * eased, left: scroller.scrollLeft, behavior: 'instant' });
+        expectedTop = scroller.scrollTop;
+        if (progress < 1) frame = requestAnimationFrame(animate);
+        else cancel();
+      }
+      frame = requestAnimationFrame(animate);
+    }, 15000);
+  }
+
+  interactions.forEach((name) => document.addEventListener(name, cancel, options));
+  window.addEventListener('scroll', onScroll, options);
+  window.addEventListener('pagehide', cancel);
+  document.addEventListener('visibilitychange', onVisibilityChange);
+  reducedMotion.addEventListener('change', onMotionChange);
+  if (document.readyState === 'complete') startTimer();
+  else window.addEventListener('load', startTimer, { once: true });
+}
+
 function initMusic() {
   const audio = document.getElementById('backgroundMusic');
   const toggle = document.getElementById('musicToggle');
@@ -512,6 +579,7 @@ function initMusic() {
 function init() {
   setLanguage(appState.lang);
   initMusic();
+  initScrollNudge();
   setInterval(updateCountdown, 1000);
 }
 

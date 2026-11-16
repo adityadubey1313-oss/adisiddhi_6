@@ -9,6 +9,12 @@
 - This is a static HTML/CSS/JavaScript project, with no package manifest, framework homepage setting or Vite base configuration. Its Pages base URL is `siteUrl` in [invitation-data.js](invitation-data.js); HTML metadata uses the same URL and assets remain project-relative.
 - Deploy from this repository's [Pages workflow](.github/workflows/deploy-pages.yml), not the parent workspace's legacy bulk-publishing scripts. Pushing this repository's `main` runs its independent validated `_site` build and Pages deployment.
 
+## Automatic scroll nudge
+
+- After the visible page finishes loading, 15 seconds without interaction triggers one 50 CSS pixel downward nudge over 800ms, clamped to available document space. Reloading starts a new visit.
+- Touch, pointer presses, clicks, wheel input, keyboard input, focus navigation, manual scrolling, hiding the page or leaving it permanently cancel that visit's hint, including any in-progress movement. Reduced motion disables it; it never resets the reader's scroll position.
+- No invitation content, controls or styling changes. Serve this folder with a local static server and reload at the top without interacting to preview. Run `node --test tests/music.test.cjs tests/scroll-nudge.test.cjs` from this project for music and nudge regressions.
+
 ## Invitation version: 3H
 
 - Post-invitation prayer: one complete Ganesh invocation and two Sanskrit verses follow the existing invitation paragraph, before the programme. The shared prayer presentation keeps Om/invocation bold, verses italic and balanced spacing/dividers without changing other invitation wording.
