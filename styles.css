@@ -1589,6 +1589,31 @@ html[lang="hi"] #share {
   font-weight: 700;
 }
 
+.family-closing {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin: 0.75rem 0 0.5rem;
+  text-align: center;
+}
+
+.family-closing p {
+  margin: 0;
+  color: var(--maroon);
+  font-family: 'Noto Serif Devanagari', 'Mangal', serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.family-closing .family-closing-decoration {
+  color: var(--gold);
+  font-family: Georgia, serif;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  line-height: 1.2;
+}
+
 .source-greetings .family-names p {
   font-size: calc(1.08rem + 2px);
 }

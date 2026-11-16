@@ -183,6 +183,16 @@ function renderSourceInvitation() {
     block.append(heading, names);
     greetings.appendChild(block);
   });
+  const closing = document.createElement('div');
+  closing.className = 'family-closing';
+  const closingText = document.createElement('p');
+  closingText.textContent = '।। नर्मदे हर ।।';
+  const decoration = document.createElement('p');
+  decoration.className = 'family-closing-decoration';
+  decoration.textContent = '*******';
+  decoration.setAttribute('aria-hidden', 'true');
+  closing.append(closingText, decoration);
+  greetings.appendChild(closing);
 }
 
 function renderWeddingDetails(lang) {
