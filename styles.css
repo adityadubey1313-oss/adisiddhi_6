@@ -1606,6 +1606,7 @@ html[lang="hi"] #share {
 }
 
 .family-closing .family-closing-decoration {
+  margin-top: 0.1rem;
   color: var(--gold);
   font-family: Georgia, serif;
   font-size: 1rem;
